@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arista-nginx-deployment
+  namespace: arista-eks-activity
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: uploadsvc
+  template:
+    metadata:
+      labels:
+        name: uploadsvc
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
