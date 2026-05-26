@@ -4,11 +4,16 @@ metadata:
   name: arista-echo-app-ingress
   namespace: arista-eks-activity
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "arista-echoapp.sctp-sandbox.com" # Route53 Record
+    external-dns.alpha.kubernetes.io/hostname: "arista-echoapp.sctp-sandbox.com"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # This triggers certificate issuance
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - arista-echoapp.sctp-sandbox.com
+    secretName: arista-tls  # This is where the certificate will be stored
   rules:
-  - host: "arista-echoapp.sctp-sandbox.com" # Route53 Record
+  - host: arista-echoapp.sctp-sandbox.com
     http:
       paths:
       - path: /
@@ -18,4 +23,3 @@ spec:
             name: arista-echo-service
             port:
               number: 80
-
